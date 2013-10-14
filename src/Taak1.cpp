@@ -10,7 +10,6 @@
 #include <string.h> //to_string
 #include <fstream> //bestand streams
 #include <sstream> //string streams
-
 //ondersteunde versie
 const int VERSION = 1;
 
@@ -75,7 +74,7 @@ void handle_questions(std::string input_file_name,
 				//antwoord uitlezen van gebruiker
 				getline(std::cin, answer);
 				//blijven nagaan of het antwoord niet leeg is
-				while(answer.empty()){
+				while (answer.empty()) {
 					print("Geef een niet leeg antwoord!");
 					getline(std::cin, answer);
 				}
@@ -94,7 +93,7 @@ void handle_questions(std::string input_file_name,
 				print_choice_sentence(amount_of_answers);
 
 				//antwoorden printen
-				for (int i = 0; i < amount_of_answers; ++i) {
+				for (int i = 1; i <= amount_of_answers; ++i) {
 					std::string choice;
 					getline(input_file_stream, choice);
 					print_choice(choice, i);
@@ -102,6 +101,17 @@ void handle_questions(std::string input_file_name,
 
 				//antwoord van gebruiker inlezen & verwerken
 				getline(std::cin, answer);
+				int answer_int = answer.c_str()[0] - 48;
+				int amount_of_digits = strlen(answer.c_str());
+				while ((amount_of_digits != 1)
+						|| (!std::isdigit(answer.c_str()[0])
+								|| !((0 < answer_int)
+										&& (answer_int <= amount_of_answers)))) {
+					print("Geef een correct getal in!");
+					getline(std::cin, answer);
+					answer_int = answer.c_str()[0] - 48;
+					amount_of_digits = strlen(answer.c_str());
+				}
 				handle_output(answer, question_number, ofl);
 
 			} else {
@@ -248,7 +258,7 @@ void print_choice_sentence(int choices) {
 }
 
 int main(int argc, char* argv[]) {
-	if(argc < 3){
+	if (argc < 3) {
 		print("Niet genoeg argumenten");
 		exit(1);
 	}
